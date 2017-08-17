@@ -1,0 +1,21 @@
+mybatis:
+    type-aliases-package: com.minho.domain
+    type-handlers-package: com.minho.typehandler
+    configuration:
+        map-underscore-to-camel-case: true
+        default-fetch-size: 100
+        default-statement-timeout: 30
+
+datasource:
+  driverClassName: "com.mysql.jdbc.Driver"
+  url: "jdbc:mysql://13.124.42.149:3306/semosudb?useUnicode=true&charaterEncoding=utf-8"
+  userName: "semosu"
+  password: "1234"
+  initialSize: 10
+  maxActive: 100
+  maxIdle: 10
+  minIdle: 10
+  maxWait: 3000
+  validationQuery: "SELECT 1"
+  validationInterval: 36000
+  testOnBorrow: true
