@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class CategoryVO {
     private Integer category_id;
-    private String category_name;
+    private String name;
     private Integer parent_category_id;
     private Integer category_level;
     private Integer sort_order;

@@ -13,7 +13,7 @@ import java.util.List;
 public interface AdminMapper {
     @Select({"<script>",
             "SELECT p.*, (select count(*) from category c where c.parent_category_id = p.category_id) as count FROM category p",
-            "where category_level = 0",
+            "where category_level = 1",
             "</script>"})
     List<CategoryVO> selectRootCategory();
 
