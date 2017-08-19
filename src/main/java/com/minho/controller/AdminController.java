@@ -2,6 +2,7 @@ package com.minho.controller;
 
 import com.minho.domain.CategoryVO;
 import com.minho.persistence.AdminMapper;
+import com.minho.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +17,55 @@ public class AdminController {
     @Autowired
     private AdminMapper adminMapper;
 
-    @GetMapping(value="/category")
-    public List<CategoryVO> getCategoryList() {
+    /**
+     * 카테고리 전체 목록 가져오기
+     * @return
+     */
+    @GetMapping(value="/root")
+    public List<CategoryVO> findCategory() {
         List<CategoryVO> categoryList = adminMapper.selectRootCategory();
         return getChildren(categoryList);
+    }
+
+    @GetMapping(value="/category")
+    public List<CategoryVO> findCategory(@RequestParam int parent_category_id) {
+        return adminMapper.selectCategory(parent_category_id);
+    }
+
+    @PostMapping(value="/category")
+    public Result addCategory(@RequestBody CategoryVO category) {
+        int result = adminMapper.insertCategory(category);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    @PutMapping(value="/category")
+    public Result modifyCategory(@RequestBody CategoryVO category) {
+        int result = adminMapper.updateCategory(category);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    @DeleteMapping(value="/category")
+    public Result removeCategory(@RequestParam int category_id) {
+        int result = adminMapper.deleteCategory(category_id);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
     }
 
     private List<CategoryVO> getChildren(List<CategoryVO> categoryList) {
         for(CategoryVO category: categoryList) {
             if(category.getCount() > 0) {
-                category.setChildren(getChildren(adminMapper.selectCategoryTree(category.getCategory_id())));
+                category.setChildren(getChildren(adminMapper.selectCategory(category.getCategory_id())));
             }
         }
         return categoryList;
