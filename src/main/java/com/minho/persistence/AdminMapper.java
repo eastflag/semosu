@@ -1,6 +1,7 @@
 package com.minho.persistence;
 
 import com.minho.domain.CategoryVO;
+import com.minho.domain.QuestionVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 @Mapper
 public interface AdminMapper {
+    // 카테고리 관리 -------------------
     @Select({"<script>",
             "SELECT p.*, (select count(*) from category c where c.parent_category_id = p.category_id) as count FROM category p",
             "where category_level = 0",
@@ -49,4 +51,38 @@ public interface AdminMapper {
             "WHERE category_id=#{category_id}",
             "</script>"})
     int deleteCategory(int category_id);
+
+    // 문제관리 --------------------
+    @Select({"<script>",
+            "SELECT * from question",
+            "where category_id = #{category_id}",
+            "order by number asc",
+            "</script>"})
+    List<QuestionVO> selectQuestion(int category_id);
+
+    @Insert({"<script>",
+            "INSERT INTO question(category_id, number, content, distribution, correct_rate, image, created)",
+            "VALUES(#{category_id}, #{number}, #{content}, #{distribution}, #{correct_rate}, #{image}, now())",
+            "</script>"})
+    int insertQuestion(QuestionVO question);
+
+    @Update({"<script>",
+            "update question",
+            "<trim prefix='set' suffixOverrides=','>",
+            "<if test='category_id!=null'>category_id = #{category_id},</if>",
+            "<if test='number!=null'>number = #{number},</if>",
+            "<if test='content!=null'>content = #{content},</if>",
+            "<if test='distribution!=null'>distribution = #{distribution},</if>",
+            "<if test='correct_rate!=null'>correct_rate = #{correct_rate},</if>",
+            "<if test='image!=null'>image = #{image},</if>",
+            "</trim>",
+            "WHERE question_id=#{question_id}",
+            "</script>"})
+    int updateQuestion(QuestionVO question);
+
+    @Delete({"<script>",
+            "delete from question",
+            "WHERE question_id=#{question_id}",
+            "</script>"})
+    int deleteQuestion(int question_id);
 }

@@ -1,6 +1,7 @@
 package com.minho.controller;
 
 import com.minho.domain.CategoryVO;
+import com.minho.domain.QuestionVO;
 import com.minho.persistence.AdminMapper;
 import com.minho.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,42 @@ public class AdminController {
     @DeleteMapping(value="/category")
     public Result removeCategory(@RequestParam int category_id) {
         int result = adminMapper.deleteCategory(category_id);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    //문제 관리--------------------
+    @GetMapping(value="/question")
+    public List<QuestionVO> findQuestion(@RequestParam int category_id) {
+        return adminMapper.selectQuestion(category_id);
+    }
+
+    @PostMapping(value="/question")
+    public Result addQuestion(@RequestBody QuestionVO question) {
+        int result = adminMapper.insertQuestion(question);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    @PutMapping(value="/question")
+    public Result modifyQuestion(@RequestBody QuestionVO question) {
+        int result = adminMapper.updateQuestion(question);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    @DeleteMapping(value="/question")
+    public Result removeQuestion(@RequestParam int question_id) {
+        int result = adminMapper.deleteQuestion(question_id);
         if (result > 0) {
             return new Result(0, "success");
         } else {
