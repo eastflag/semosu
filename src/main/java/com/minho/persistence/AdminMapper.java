@@ -19,6 +19,7 @@ public interface AdminMapper {
     @Select({"<script>",
             "SELECT p.*, (select count(*) from category c where c.parent_category_id = p.category_id) as count FROM category p",
             "where parent_category_id = #{parent_category_id}",
+            "order by sort_order asc",
             "</script>"})
     List<CategoryVO> selectCategory(int parent_category_id);
 
