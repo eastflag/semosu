@@ -107,8 +107,8 @@ public class AdminController {
             } else {
                 // 이미지가 없으면 DB만 저장
                 adminMapper.insertQuestion(question);
-                return new Result(0, "success");
             }
+            return new Result(0, "success");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -142,8 +142,8 @@ public class AdminController {
                 file.transferTo(saveFile);
             } else {
                 adminMapper.updateQuestion(question);
-                new Result(0, "success");
             }
+            new Result(0, "success");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
