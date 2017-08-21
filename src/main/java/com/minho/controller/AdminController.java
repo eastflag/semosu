@@ -1,12 +1,17 @@
 package com.minho.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.minho.ConfigConstant;
 import com.minho.domain.CategoryVO;
 import com.minho.domain.QuestionVO;
 import com.minho.persistence.AdminMapper;
 import com.minho.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,6 +20,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/api")
 public class AdminController {
+    @Autowired
+    private ConfigConstant configConstant;
+
     @Autowired
     private AdminMapper adminMapper;
 
@@ -70,23 +78,79 @@ public class AdminController {
     }
 
     @PostMapping(value="/question")
-    public Result addQuestion(@RequestBody QuestionVO question) {
-        int result = adminMapper.insertQuestion(question);
-        if (result > 0) {
-            return new Result(0, "success");
-        } else {
-            return new Result(100, "fail");
+    public Result addQuestion(@RequestPart(value="file", required = false) MultipartFile file, @RequestPart("json") String inQuestion) {
+        QuestionVO question = null;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            question = mapper.readValue(inQuestion, QuestionVO.class);
+
+            // 이미지가 있는지 체크
+            if (file != null) {
+                //업로드할 디렉토리가 있는지 체크
+                String path = configConstant.uploadRootFolder + configConstant.uploadQuestionFolder;
+                File dir = new File(path);
+                if (!dir.isDirectory()) {
+                    dir.mkdirs();
+                }
+                // 파일 정보 추출
+                String filename = file.getOriginalFilename();
+                String pointExt = filename.substring(filename.lastIndexOf("."));
+
+                // DB 저장하여 question_id 추출
+                question.setImage(pointExt);
+                adminMapper.insertQuestion(question);
+
+                //파일 저장
+                String savedFilename = String.format("%d%s", question.getQuestion_id(), pointExt);
+                File saveFile = new File(path, savedFilename);
+                file.transferTo(saveFile);
+            } else {
+                // 이미지가 없으면 DB만 저장
+                adminMapper.insertQuestion(question);
+                return new Result(0, "success");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return new Result(500, "internal server error");
     }
 
     @PutMapping(value="/question")
-    public Result modifyQuestion(@RequestBody QuestionVO question) {
-        int result = adminMapper.updateQuestion(question);
-        if (result > 0) {
-            return new Result(0, "success");
-        } else {
-            return new Result(100, "fail");
+    public Result modifyQuestion(@RequestPart(value="file", required = false) MultipartFile file, @RequestPart("json") String inQuestion) {
+        QuestionVO question = null;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            question = mapper.readValue(inQuestion, QuestionVO.class);
+
+            // 이미지가 있는지 체크
+            if (file != null) {
+                // 파일 정보 추출
+                String path = configConstant.uploadRootFolder + configConstant.uploadQuestionFolder;
+                String filename = file.getOriginalFilename();
+                String pointExt = filename.substring(filename.lastIndexOf("."));
+
+                // DB 수정
+                question.setImage(pointExt);
+                adminMapper.updateQuestion(question);
+
+                //파일 저장
+                String savedFilename = String.format("%d%s", question.getQuestion_id(), pointExt);
+                File saveFile = new File(path, savedFilename);
+                file.transferTo(saveFile);
+            } else {
+                adminMapper.updateQuestion(question);
+                new Result(0, "success");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return new Result(500, "internal server error");
     }
 
     @DeleteMapping(value="/question")

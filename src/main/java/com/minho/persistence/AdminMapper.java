@@ -60,6 +60,7 @@ public interface AdminMapper {
             "</script>"})
     List<QuestionVO> selectQuestion(int category_id);
 
+    @Options(useGeneratedKeys = true, keyProperty = "question_id")
     @Insert({"<script>",
             "INSERT INTO question(category_id, number, content, distribution, correct_rate, image, created)",
             "VALUES(#{category_id}, #{number}, #{content}, #{distribution}, #{correct_rate}, #{image}, now())",
