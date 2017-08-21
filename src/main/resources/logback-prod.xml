@@ -10,10 +10,10 @@
 	</appender>
  
   	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>/var/log/sikcall/sikcall.log</File>
+		<File>/var/log/semosu/semosu.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 		    <!-- daily rollover -->
-			<FileNamePattern>/var/log/sikcall/sikcall.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>/var/log/semosu/semosu.%d{yyyy-MM-dd}.log</FileNamePattern>
  
 			<!-- keep 30 days' worth of history -->
 			<maxHistory>30</maxHistory>			
@@ -24,7 +24,7 @@
 		</encoder> 	    
   	</appender>	
  
-	<logger name="com.center" additivity="false" level="DEBUG">
+	<logger name="com.minho" additivity="false" level="DEBUG">
 		<appender-ref ref="dailyRollingFileAppender"/>
 	</logger>
  
