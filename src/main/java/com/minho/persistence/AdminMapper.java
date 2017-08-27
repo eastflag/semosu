@@ -1,5 +1,6 @@
 package com.minho.persistence;
 
+import com.minho.domain.AnswerVO;
 import com.minho.domain.CategoryVO;
 import com.minho.domain.QuestionVO;
 import org.apache.ibatis.annotations.*;
@@ -86,4 +87,38 @@ public interface AdminMapper {
             "WHERE question_id=#{question_id}",
             "</script>"})
     int deleteQuestion(int question_id);
+
+    // 정답관리 --------------------
+    @Select({"<script>",
+            "SELECT * from answer",
+            "where question_id = #{question_id}",
+            "order by sort_order asc",
+            "</script>"})
+    List<AnswerVO> selectAnswer(int question_id);
+
+    @Options(useGeneratedKeys = true, keyProperty = "question_id")
+    @Insert({"<script>",
+            "INSERT INTO answer(question_id, teacher, youtube, charged, sort_order, created)",
+            "VALUES(#{question_id}, #{teacher}, #{youtube}, #{charged}, #{sort_order}, now())",
+            "</script>"})
+    int insertAnswer(AnswerVO answer);
+
+    @Update({"<script>",
+            "update answer",
+            "<trim prefix='set' suffixOverrides=','>",
+            "<if test='question_id!=null'>question_id = #{question_id},</if>",
+            "<if test='teacher!=null'>teacher = #{teacher},</if>",
+            "<if test='youtube!=null'>youtube = #{youtube},</if>",
+            "<if test='charged!=null'>charged = #{charged},</if>",
+            "<if test='sort_order!=null'>sort_order = #{sort_order},</if>",
+            "</trim>",
+            "WHERE answer_id=#{answer_id}",
+            "</script>"})
+    int updateAnswer(AnswerVO answer);
+
+    @Delete({"<script>",
+            "delete from answer",
+            "WHERE answer_id=#{answer_id}",
+            "</script>"})
+    int deleteAnswer(int answer_id);
 }

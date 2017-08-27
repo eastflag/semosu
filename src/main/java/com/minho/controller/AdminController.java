@@ -2,6 +2,7 @@ package com.minho.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minho.ConfigConstant;
+import com.minho.domain.AnswerVO;
 import com.minho.domain.CategoryVO;
 import com.minho.domain.QuestionVO;
 import com.minho.persistence.AdminMapper;
@@ -170,5 +171,41 @@ public class AdminController {
             }
         }
         return categoryList;
+    }
+
+    // 정답관리----------------------------------------------------------------------
+    @GetMapping(value="/answer")
+    public List<AnswerVO> findAnswer(@RequestParam int question_id) {
+        return adminMapper.selectAnswer(question_id);
+    }
+
+    @PostMapping(value="/answer")
+    public Result addAnswer(@RequestBody AnswerVO answer) {
+        int result = adminMapper.insertAnswer(answer);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    @PutMapping(value="/answer")
+    public Result modifyAnswer(@RequestBody AnswerVO answer) {
+        int result = adminMapper.updateAnswer(answer);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    @DeleteMapping(value="/answer")
+    public Result removeAnswer(@RequestParam int answer_id) {
+        int result = adminMapper.deleteAnswer(answer_id);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
     }
 }
