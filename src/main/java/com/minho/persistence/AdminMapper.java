@@ -26,7 +26,13 @@ public interface AdminMapper {
             "</script>"})
     List<CategoryVO> selectCategory(int parent_category_id);
 
+    @Select({"<script>",
+            "SELECT * FROM category",
+            "where category_id = #{category_id}",
+            "</script>"})
+    CategoryVO selectOneCategory(CategoryVO category);
 
+    @Options(useGeneratedKeys = true, keyProperty = "category_id")
     @Insert({"<script>",
             "INSERT INTO category(parent_category_id, name, category_level, sort_order, test_date, grade_cut, created)",
             "VALUES(#{parent_category_id}, #{name}, #{category_level}, #{sort_order}, #{test_date}, #{grade_cut}, now())",
@@ -60,6 +66,12 @@ public interface AdminMapper {
             "order by number asc",
             "</script>"})
     List<QuestionVO> selectQuestion(int category_id);
+
+    @Select({"<script>",
+            "SELECT * from question",
+            "where question_id = #{question_id}",
+            "</script>"})
+    QuestionVO selectOneQuestion(QuestionVO question);
 
     @Options(useGeneratedKeys = true, keyProperty = "question_id")
     @Insert({"<script>",
@@ -96,7 +108,13 @@ public interface AdminMapper {
             "</script>"})
     List<AnswerVO> selectAnswer(int question_id);
 
-    @Options(useGeneratedKeys = true, keyProperty = "question_id")
+    @Select({"<script>",
+            "SELECT * from answer",
+            "where answer_id = #{answer_id}",
+            "</script>"})
+    AnswerVO selectOneAnswer(AnswerVO answer);
+
+    @Options(useGeneratedKeys = true, keyProperty = "answer_id")
     @Insert({"<script>",
             "INSERT INTO answer(question_id, teacher, youtube, charged, sort_order, created)",
             "VALUES(#{question_id}, #{teacher}, #{youtube}, #{charged}, #{sort_order}, now())",

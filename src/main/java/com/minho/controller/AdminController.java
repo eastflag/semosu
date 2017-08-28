@@ -43,13 +43,9 @@ public class AdminController {
     }
 
     @PostMapping(value="/category")
-    public Result addCategory(@RequestBody CategoryVO category) {
-        int result = adminMapper.insertCategory(category);
-        if (result > 0) {
-            return new Result(0, "success");
-        } else {
-            return new Result(100, "fail");
-        }
+    public CategoryVO addCategory(@RequestBody CategoryVO category) {
+        adminMapper.insertCategory(category);
+        return adminMapper.selectOneCategory(category);
     }
 
     @PutMapping(value="/category")
@@ -79,7 +75,7 @@ public class AdminController {
     }
 
     @PostMapping(value="/question")
-    public Result addQuestion(@RequestPart(value="file", required = false) MultipartFile file, @RequestPart("json") String inQuestion) {
+    public QuestionVO addQuestion(@RequestPart(value="file", required = false) MultipartFile file, @RequestPart("json") String inQuestion) {
         QuestionVO question = null;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -109,14 +105,14 @@ public class AdminController {
                 // 이미지가 없으면 DB만 저장
                 adminMapper.insertQuestion(question);
             }
-            return new Result(0, "success");
+            return adminMapper.selectOneQuestion(question);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new Result(500, "internal server error");
+        return new QuestionVO();
     }
 
     @PutMapping(value="/question")
@@ -180,13 +176,9 @@ public class AdminController {
     }
 
     @PostMapping(value="/answer")
-    public Result addAnswer(@RequestBody AnswerVO answer) {
-        int result = adminMapper.insertAnswer(answer);
-        if (result > 0) {
-            return new Result(0, "success");
-        } else {
-            return new Result(100, "fail");
-        }
+    public AnswerVO addAnswer(@RequestBody AnswerVO answer) {
+        adminMapper.insertAnswer(answer);
+        return adminMapper.selectOneAnswer(answer);
     }
 
     @PutMapping(value="/answer")
