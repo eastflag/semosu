@@ -59,7 +59,7 @@ public interface AdminMapper {
             "</script>"})
     int deleteCategory(int category_id);
 
-    // 문제관리 --------------------
+    // 문제관리 ----------------------------------------------------------------------
     @Select({"<script>",
             "SELECT * from question",
             "where category_id = #{category_id}",
@@ -75,8 +75,8 @@ public interface AdminMapper {
 
     @Options(useGeneratedKeys = true, keyProperty = "question_id")
     @Insert({"<script>",
-            "INSERT INTO question(category_id, number, content, distribution, correct_rate, image, created)",
-            "VALUES(#{category_id}, #{number}, #{content}, #{distribution}, #{correct_rate}, #{image}, now())",
+            "INSERT INTO question(category_id, number, sort_order content, distribution, correct_rate, image, created)",
+            "VALUES(#{category_id}, #{number}, #{sort_order}, #{content}, #{distribution}, #{correct_rate}, #{image}, now())",
             "</script>"})
     int insertQuestion(QuestionVO question);
 
@@ -85,6 +85,7 @@ public interface AdminMapper {
             "<trim prefix='set' suffixOverrides=','>",
             "<if test='category_id!=null'>category_id = #{category_id},</if>",
             "<if test='number!=null'>number = #{number},</if>",
+            "<if test='sort_order!=null'>sort_order = #{sort_order},</if>",
             "<if test='content!=null'>content = #{content},</if>",
             "<if test='distribution!=null'>distribution = #{distribution},</if>",
             "<if test='correct_rate!=null'>correct_rate = #{correct_rate},</if>",
@@ -100,7 +101,7 @@ public interface AdminMapper {
             "</script>"})
     int deleteQuestion(int question_id);
 
-    // 정답관리 --------------------
+    // 정답관리 --------------------------------------------------
     @Select({"<script>",
             "SELECT * from answer",
             "where question_id = #{question_id}",

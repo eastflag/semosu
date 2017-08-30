@@ -12,12 +12,15 @@ public class QuestionVO {
     private Integer question_id;
     private Integer category_id;
     private Integer number;
+    private Integer sort_order;
     private String content;
     private Integer distribution;
     private Integer correct_rate;
     private String image;
     private String created;
     private String updated;
+
+    private Boolean isEdited; // 사용하지 않으나 ObjectMapper에서 입력을 객체로 변환시 필요함.
 
     private CategoryVO category;
 }

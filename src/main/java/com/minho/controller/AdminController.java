@@ -140,14 +140,14 @@ public class AdminController {
             } else {
                 adminMapper.updateQuestion(question);
             }
-            new Result(0, "success");
+            return new Result(0, "success");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return new Result(500, "internal server error");
+        return new Result(500, "IO server error");
     }
 
     @DeleteMapping(value="/question")
