@@ -64,8 +64,15 @@ public interface AdminMapper {
             "SELECT * from question",
             "where category_id = #{category_id}",
             "order by number asc",
+            "LIMIT #{start_index}, #{page_size}",
             "</script>"})
-    List<QuestionVO> selectQuestion(int category_id);
+    List<QuestionVO> selectQuestion(QuestionVO question);
+
+    @Select({"<script>",
+            "SELECT count(*) from question",
+            "where category_id = #{category_id}",
+            "</script>"})
+    int selectQuestionCount(QuestionVO question);
 
     @Select({"<script>",
             "SELECT * from question",

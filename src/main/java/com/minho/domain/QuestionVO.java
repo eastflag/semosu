@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-public class QuestionVO {
+public class QuestionVO extends SearchVO{
     private Integer question_id;
     private Integer category_id;
     private Integer number;

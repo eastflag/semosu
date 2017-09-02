@@ -7,6 +7,7 @@ import com.minho.domain.CategoryVO;
 import com.minho.domain.QuestionVO;
 import com.minho.persistence.AdminMapper;
 import com.minho.result.Result;
+import com.minho.result.ResultDataTotal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,8 +71,12 @@ public class AdminController {
 
     //문제 관리--------------------
     @GetMapping(value="/question")
-    public List<QuestionVO> findQuestion(@RequestParam int category_id) {
-        return adminMapper.selectQuestion(category_id);
+    public Result findQuestion(@RequestParam int category_id, @RequestParam int start_index, @RequestParam int page_size) {
+        QuestionVO question = new QuestionVO();
+        question.setCategory_id(category_id);
+        question.setStart_index(start_index);
+        question.setPage_size(page_size);
+        return new ResultDataTotal<>(0, "success",adminMapper.selectQuestion(question), adminMapper.selectQuestionCount(question));
     }
 
     @PostMapping(value="/question")
