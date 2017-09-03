@@ -20,6 +20,7 @@ public class QuestionVO extends SearchVO{
     private String created;
     private String updated;
 
+    private Integer answer_count;
     private Boolean isEdited; // 사용하지 않으나 ObjectMapper에서 입력을 객체로 변환시 필요함.
 
     private CategoryVO category;

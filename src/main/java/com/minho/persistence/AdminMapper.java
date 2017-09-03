@@ -61,7 +61,7 @@ public interface AdminMapper {
 
     // 문제관리 ----------------------------------------------------------------------
     @Select({"<script>",
-            "SELECT * from question",
+            "SELECT *, (select count(*) from answer where question_id = Q.question_id) as answer_count from question Q",
             "where category_id = #{category_id}",
             "order by number asc",
             "LIMIT #{start_index}, #{page_size}",
