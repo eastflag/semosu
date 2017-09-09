@@ -1,5 +1,6 @@
 package com.minho.controller;
 
+import com.minho.domain.AnswerVO;
 import com.minho.domain.CategoryVO;
 import com.minho.domain.QuestionVO;
 import com.minho.persistence.UserMapper;
@@ -32,5 +33,10 @@ public class UserController {
     @GetMapping(value="/question")
     public List<QuestionVO> findQuestion(@RequestParam int category_id) {
         return userMapper.selectQuestion(category_id);
+    }
+
+    @GetMapping(value="/answer")
+    public List<AnswerVO> findAnswer(@RequestParam int question_id) {
+        return userMapper.selectAnswer(question_id);
     }
 }

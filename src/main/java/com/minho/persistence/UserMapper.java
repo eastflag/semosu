@@ -1,5 +1,6 @@
 package com.minho.persistence;
 
+import com.minho.domain.AnswerVO;
 import com.minho.domain.CategoryVO;
 import com.minho.domain.QuestionVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,7 +26,14 @@ public interface UserMapper {
     @Select({"<script>",
             "SELECT *, (select count(*) from answer where question_id = Q.question_id) as answer_count from question Q",
             "where category_id = #{category_id}",
-            "order by number asc, sort_order asc",
+            "order by sort_order asc",
             "</script>"})
     List<QuestionVO> selectQuestion(int category_id);
+
+    @Select({"<script>",
+            "SELECT * FROM answer",
+            "where question_id = #{question_id}",
+            "order by sort_order asc",
+            "</script>"})
+    List<AnswerVO> selectAnswer(int question_id);
 }
