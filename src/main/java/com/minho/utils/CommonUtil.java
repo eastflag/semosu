@@ -18,43 +18,39 @@ import java.util.Properties;
 
 public class CommonUtil {
 	
-	public static String createJWT(String id, String issuer, String subject, long ttlMillis) {
-		try {
-			Resource resource = new ClassPathResource("/application.properties");
-			Properties props = PropertiesLoaderUtils.loadProperties(resource);
-			String key = props.getProperty("auth.key");
+	public static String createJWT(String id, String issuer, String subject, long ttlMillis) throws IOException {
+		Resource resource = new ClassPathResource("/application.properties");
+		Properties props = PropertiesLoaderUtils.loadProperties(resource);
+		String key = props.getProperty("auth.key");
 
-			//The JWT signature algorithm we will be using to sign the token
-			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+		//The JWT signature algorithm we will be using to sign the token
+		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-			long nowMillis = System.currentTimeMillis();
-			Date now = new Date(nowMillis);
+		long nowMillis = System.currentTimeMillis();
+		Date now = new Date(nowMillis);
 
-			//We will sign our JWT with our ApiKey secret
-			byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
-			Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+		//We will sign our JWT with our ApiKey secret
+		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
+		Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-			//Let's set the JWT Claims
-			JwtBuilder builder = Jwts.builder().setId(id)
-					.setIssuedAt(now)
-					.setSubject(subject)
-					.setIssuer(issuer)
-					.signWith(signatureAlgorithm, signingKey);
+		//Let's set the JWT Claims
+		JwtBuilder builder = Jwts.builder().setId(id)
+				.setIssuedAt(now)
+				.setSubject(subject)
+				.setIssuer(issuer)
+				.signWith(signatureAlgorithm, signingKey);
 
-			//if it has been specified, let's add the expiration
-			if (ttlMillis >= 0) {
-				long expMillis = nowMillis + ttlMillis;
-				Date exp = new Date(expMillis);
-				builder.setExpiration(exp);
-			}
-
-			//Builds the JWT and serializes it to a compact, URL-safe string
-			System.out.println("builder.compact(): " + builder.compact());
-
-			return builder.compact();
-		} catch (IOException e) {
-			return null;
+		//if it has been specified, let's add the expiration
+		if (ttlMillis >= 0) {
+			long expMillis = nowMillis + ttlMillis;
+			Date exp = new Date(expMillis);
+			builder.setExpiration(exp);
 		}
+
+		//Builds the JWT and serializes it to a compact, URL-safe string
+		System.out.println("builder.compact(): " + builder.compact());
+
+		return builder.compact();
 	}
 	
 	public static String parseJWT(String jwt) throws Exception {

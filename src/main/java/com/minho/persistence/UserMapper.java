@@ -2,14 +2,35 @@ package com.minho.persistence;
 
 import com.minho.domain.AnswerVO;
 import com.minho.domain.CategoryVO;
+import com.minho.domain.MemberVO;
 import com.minho.domain.QuestionVO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.lang.reflect.Member;
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
+    @Select({"<script>",
+            "SELECT * FROM member",
+            "where email = #{email}",
+            "</script>"})
+    MemberVO selectMember(MemberVO member);
+
+    @Insert({"<script>",
+            "INSERT INTO member(email, pw, nickname, created)",
+            "VALUES(#{email}, #{pw}, #{nickname}, now())",
+            "</script>"})
+    int insertMember(MemberVO member);
+
+    @Select({"<script>",
+            "SELECT * FROM member",
+            "where email = #{email}",
+            "</script>"})
+    MemberVO login(MemberVO member);
+
     @Select({"<script>",
             "SELECT * FROM category",
             "where parent_category_id = #{parent_category_id}",
