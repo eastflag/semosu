@@ -124,8 +124,8 @@ public interface AdminMapper {
 
     @Options(useGeneratedKeys = true, keyProperty = "answer_id")
     @Insert({"<script>",
-            "INSERT INTO answer(question_id, teacher, youtube, charged, sort_order, created)",
-            "VALUES(#{question_id}, #{teacher}, #{youtube}, #{charged}, #{sort_order}, now())",
+            "INSERT INTO answer(question_id, teacher, title, youtube, charged, sort_order, created)",
+            "VALUES(#{question_id}, #{teacher}, #{title}, #{youtube}, #{charged}, #{sort_order}, now())",
             "</script>"})
     int insertAnswer(AnswerVO answer);
 
@@ -134,6 +134,7 @@ public interface AdminMapper {
             "<trim prefix='set' suffixOverrides=','>",
             "<if test='question_id!=null'>question_id = #{question_id},</if>",
             "<if test='teacher!=null'>teacher = #{teacher},</if>",
+            "<if test='title!=null'>title = #{title},</if>",
             "<if test='youtube!=null'>youtube = #{youtube},</if>",
             "<if test='charged!=null'>charged = #{charged},</if>",
             "<if test='sort_order!=null'>sort_order = #{sort_order},</if>",

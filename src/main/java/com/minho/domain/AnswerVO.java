@@ -12,6 +12,7 @@ public class AnswerVO {
     private Integer answer_id;
     private Integer question_id;
     private String teacher;
+    private String title;
     private String youtube;
     private Boolean charged;
     private Integer sort_order;
