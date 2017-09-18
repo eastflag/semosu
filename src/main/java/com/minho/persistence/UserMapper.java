@@ -1,9 +1,6 @@
 package com.minho.persistence;
 
-import com.minho.domain.AnswerVO;
-import com.minho.domain.CategoryVO;
-import com.minho.domain.MemberVO;
-import com.minho.domain.QuestionVO;
+import com.minho.domain.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -14,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     @Select({"<script>",
-            "SELECT * FROM member",
+            "SELECT member.*, auth.role from member left outer join auth on member.member_id = auth.member_id",
             "where email = #{email}",
             "</script>"})
     MemberVO selectMember(MemberVO member);
@@ -57,4 +54,18 @@ public interface UserMapper {
             "order by sort_order asc",
             "</script>"})
     List<AnswerVO> selectAnswer(int question_id);
+
+    @Select({"<script>",
+            "SELECT board.*, member.nickname FROM board inner join member on board.member_id = member.member_id",
+            "where board_type=#{board_type}",
+            "order by board_id desc",
+            "LIMIT #{start_index}, #{page_size}",
+            "</script>"})
+    List<BoardVO> selectBoardList(BoardVO board);
+
+    @Select({"<script>",
+            "SELECT count(*) FROM board",
+            "where board_type=#{board_type}",
+            "</script>"})
+    int countBoard(BoardVO board);
 }

@@ -1,15 +1,15 @@
 package com.minho.controller;
 
 import com.minho.Constant;
-import com.minho.domain.AnswerVO;
-import com.minho.domain.CategoryVO;
-import com.minho.domain.MemberVO;
-import com.minho.domain.QuestionVO;
+import com.minho.domain.*;
 import com.minho.persistence.UserMapper;
 import com.minho.result.Result;
 import com.minho.result.ResultData;
+import com.minho.result.ResultDataTotal;
 import com.minho.utils.CommonUtil;
 import com.minho.utils.CryptographyPasswordHash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class UserController {
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserMapper userMapper;
 
@@ -103,5 +105,11 @@ public class UserController {
         } else {
             return new Result(451, "비밀번호가 맞지 않습니다. 다시 확인해주세요.");
         }
+    }
+
+    //게시판
+    @RequestMapping("/boardList")
+    public ResultDataTotal<List<BoardVO>> getBoardList(@RequestBody BoardVO board) {
+        return new ResultDataTotal<>(0, "success", userMapper.selectBoardList(board), userMapper.countBoard(board)) ;
     }
 }

@@ -14,7 +14,8 @@ public class MemberVO {
     private String pw;
     private String created;
     private String updated;
-    private ArrayList<String> role;
+    //private ArrayList<String> role;
+    private String role;
 
     private String token;
 }
