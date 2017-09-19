@@ -107,9 +107,31 @@ public class UserController {
         }
     }
 
-    //게시판
-    @RequestMapping("/boardList")
+    //게시판 -----------------------------------------------------------------------------------------------------------
+    @PostMapping("/boardList")
     public ResultDataTotal<List<BoardVO>> getBoardList(@RequestBody BoardVO board) {
         return new ResultDataTotal<>(0, "success", userMapper.selectBoardList(board), userMapper.countBoard(board)) ;
+    }
+
+    @PostMapping("/board")
+    public Result addBoard(@RequestBody BoardVO board) {
+        userMapper.insertBoard(board);
+        return new Result(0, "success");
+    }
+
+    @GetMapping("/board")
+    public BoardVO getBoard(@RequestParam int board_id) {
+        return userMapper.selectBoard(board_id);
+    }
+
+    @PutMapping("/board")
+    public Result modifyBoard(@RequestBody BoardVO board) {
+        userMapper.updateBoard(board);
+        return new Result(0, "success");
+    }
+
+    @DeleteMapping("/board")
+    public BoardVO removeBoard(@RequestParam int board_id) {
+        return userMapper.selectBoard(board_id);
     }
 }

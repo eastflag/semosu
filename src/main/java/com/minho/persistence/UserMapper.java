@@ -1,9 +1,7 @@
 package com.minho.persistence;
 
 import com.minho.domain.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.lang.reflect.Member;
 import java.util.List;
@@ -55,6 +53,7 @@ public interface UserMapper {
             "</script>"})
     List<AnswerVO> selectAnswer(int question_id);
 
+    // 게시판 ----------------------------------------------------------------------------------------------------------
     @Select({"<script>",
             "SELECT board.*, member.nickname FROM board inner join member on board.member_id = member.member_id",
             "where board_type=#{board_type}",
@@ -68,4 +67,29 @@ public interface UserMapper {
             "where board_type=#{board_type}",
             "</script>"})
     int countBoard(BoardVO board);
+
+    @Insert({"<script>",
+            "INSERT INTO board(board_type, member_id, title, content, created)",
+            "VALUES(#{board_type}, #{member_id}, #{title}, #{content}, now())",
+            "</script>"})
+    int insertBoard(BoardVO board);
+
+    @Select({"<script>",
+            "SELECT board.*, member.nickname FROM board inner join member on board.member_id = member.member_id",
+            "where board_id=#{board_id}",
+            "</script>"})
+    BoardVO selectBoard(int board_id);
+
+    @Update({"<script>",
+            "UPDATE board",
+            "set title = #{title}, content = #{content}",
+            "WHERE board_id = #{board_id}",
+            "</script>"})
+    int updateBoard(BoardVO board);
+
+    @Delete({"<script>",
+            "DELETE FROM board",
+            "WHERE board_id = #{board_id}",
+            "</script>"})
+    int deleteBoard(int board_id);
 }
