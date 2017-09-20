@@ -92,4 +92,31 @@ public interface UserMapper {
             "WHERE board_id = #{board_id}",
             "</script>"})
     int deleteBoard(int board_id);
+
+    // 댓글 ----------------------------------------------------------------------------------------------------------
+    @Select({"<script>",
+            "SELECT comment.*, member.nickname FROM comment inner join member on comment.member_id = member.member_id",
+            "where board_id=#{board_id}",
+            "order by comment_id desc",
+            "</script>"})
+    List<CommentVO> selectCommentList(int board_id);
+
+    @Insert({"<script>",
+            "INSERT INTO comment(board_id, member_id, content, created)",
+            "VALUES(#{board_id}, #{member_id}, #{content}, now())",
+            "</script>"})
+    int insertComment(CommentVO comment);
+
+    @Update({"<script>",
+            "UPDATE comment",
+            "set content = #{content}",
+            "WHERE comment_id = #{comment_id}",
+            "</script>"})
+    int updateComment(CommentVO comment);
+
+    @Delete({"<script>",
+            "DELETE FROM comment",
+            "WHERE comment_id = #{comment_id}",
+            "</script>"})
+    int deleteComment(int comment_id);
 }

@@ -131,7 +131,32 @@ public class UserController {
     }
 
     @DeleteMapping("/board")
-    public BoardVO removeBoard(@RequestParam int board_id) {
-        return userMapper.selectBoard(board_id);
+    public Result removeBoard(@RequestParam int board_id) {
+        userMapper.deleteBoard(board_id);
+        return new Result(0, "success");
+    }
+
+    //댓글--------------------------------------------------------------------------------------------------------------
+    @GetMapping("/comment")
+    public List<CommentVO> getComment(@RequestParam int comment_id) {
+        return userMapper.selectCommentList(comment_id);
+    }
+
+    @PostMapping("/comment")
+    public Result addComment(@RequestBody CommentVO comment) {
+        userMapper.insertComment(comment);
+        return new Result(0, "success");
+    }
+
+    @PutMapping("/comment")
+    public Result modifyComment(@RequestBody CommentVO comment) {
+        userMapper.updateComment(comment);
+        return new Result(0, "success");
+    }
+
+    @DeleteMapping("/comment")
+    public Result removeComment(@RequestParam int comment_id) {
+        userMapper.deleteComment(comment_id);
+        return new Result(0, "success");
     }
 }
