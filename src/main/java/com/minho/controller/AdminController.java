@@ -59,6 +59,22 @@ public class AdminController {
         }
     }
 
+    @PutMapping(value="/child_category")
+    public Result modifyChildCategory(@RequestBody List<CategoryVO> categoryList) {
+        //
+        int totalResultCnt = 0;
+        for(CategoryVO category : categoryList) {
+            int result = adminMapper.updateCategory(category);
+            if (result > 0) totalResultCnt++;
+        }
+
+        if (totalResultCnt == categoryList.size()) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
     @DeleteMapping(value="/category")
     public Result removeCategory(@RequestParam int category_id) {
         int result = adminMapper.deleteCategory(category_id);
