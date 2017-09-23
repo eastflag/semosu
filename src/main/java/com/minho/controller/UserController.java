@@ -138,8 +138,8 @@ public class UserController {
 
     //댓글--------------------------------------------------------------------------------------------------------------
     @GetMapping("/comment")
-    public List<CommentVO> getComment(@RequestParam int comment_id) {
-        return userMapper.selectCommentList(comment_id);
+    public List<CommentVO> getComment(@RequestParam int board_id) {
+        return userMapper.selectCommentList(board_id);
     }
 
     @PostMapping("/comment")
@@ -157,6 +157,30 @@ public class UserController {
     @DeleteMapping("/comment")
     public Result removeComment(@RequestParam int comment_id) {
         userMapper.deleteComment(comment_id);
+        return new Result(0, "success");
+    }
+
+    //리뷰--------------------------------------------------------------------------------------------------------------
+    @GetMapping("/review")
+    public List<ReviewVO> getreview(@RequestParam int answer_id) {
+        return userMapper.selectReviewList(answer_id);
+    }
+
+    @PostMapping("/review")
+    public Result addreview(@RequestBody ReviewVO review) {
+        userMapper.insertReview(review);
+        return new Result(0, "success");
+    }
+
+    @PutMapping("/review")
+    public Result modifyreview(@RequestBody ReviewVO review) {
+        userMapper.updateReview(review);
+        return new Result(0, "success");
+    }
+
+    @DeleteMapping("/review")
+    public Result removereview(@RequestParam int review_id) {
+        userMapper.deleteReview(review_id);
         return new Result(0, "success");
     }
 }

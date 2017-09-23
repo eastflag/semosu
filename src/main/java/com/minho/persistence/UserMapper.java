@@ -119,4 +119,31 @@ public interface UserMapper {
             "WHERE comment_id = #{comment_id}",
             "</script>"})
     int deleteComment(int comment_id);
+
+    // 리뷰 ----------------------------------------------------------------------------------------------------------
+    @Select({"<script>",
+            "SELECT review.*, member.nickname FROM review inner join member on review.member_id = member.member_id",
+            "where answer_id=#{answer_id}",
+            "order by review_id desc",
+            "</script>"})
+    List<ReviewVO> selectReviewList(int answer_id);
+
+    @Insert({"<script>",
+            "INSERT INTO review(answer_id, member_id, rate, content, created)",
+            "VALUES(#{answer_id}, #{member_id}, #{rate}, #{content}, now())",
+            "</script>"})
+    int insertReview(ReviewVO review);
+
+    @Update({"<script>",
+            "UPDATE review",
+            "set rate = #{rate}, content = #{content}",
+            "WHERE review_id = #{review_id}",
+            "</script>"})
+    int updateReview(ReviewVO review);
+
+    @Delete({"<script>",
+            "DELETE FROM review",
+            "WHERE review_id = #{review_id}",
+            "</script>"})
+    int deleteReview(int review_id);
 }
