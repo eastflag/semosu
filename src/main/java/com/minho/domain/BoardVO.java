@@ -19,4 +19,5 @@ public class BoardVO extends SearchVO {
 
     //result 매핑
     private String nickname;
+    private Integer comment_count;
 }

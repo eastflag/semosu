@@ -55,9 +55,10 @@ public interface UserMapper {
 
     // 게시판 ----------------------------------------------------------------------------------------------------------
     @Select({"<script>",
-            "SELECT board.*, member.nickname FROM board inner join member on board.member_id = member.member_id",
-            "where board_type=#{board_type}",
-            "order by board_id desc",
+            "SELECT B.*, M.nickname, (select count(*) from  comment where board_id = B.board_id) as comment_count",
+            "FROM board B inner join member M on B.member_id = M.member_id",
+            "WHERE board_type=#{board_type}",
+            "ORDER BY B.board_id desc",
             "LIMIT #{start_index}, #{page_size}",
             "</script>"})
     List<BoardVO> selectBoardList(BoardVO board);
