@@ -20,4 +20,6 @@ public class AnswerVO {
     private String updated;
 
     private QuestionVO question;
+    private Integer review_count; // 평점 갯수
+    private Float review_rate;    // 평점 평균
 }
