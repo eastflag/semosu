@@ -13,6 +13,8 @@ public class ReviewVO {
     private String content;
     private String created;
     private String updated;
+    private String reply;
+    private String reply_created;
 
     private String nickname;
 }
