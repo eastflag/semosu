@@ -1,8 +1,6 @@
 package com.minho.persistence;
 
-import com.minho.domain.AnswerVO;
-import com.minho.domain.CategoryVO;
-import com.minho.domain.QuestionVO;
+import com.minho.domain.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -148,4 +146,20 @@ public interface AdminMapper {
             "WHERE answer_id=#{answer_id}",
             "</script>"})
     int deleteAnswer(int answer_id);
+
+    // 리뷰관리
+    @Select({"<script>",
+            "SELECT review.*, answer.teacher, answer.title",
+            "FROM review inner join answer on review.answer_id = answer.answer_id",
+            "order by review.updated desc",
+            "LIMIT #{start_index}, #{page_size}",
+            "</script>"})
+    List<ReviewVO> selectReview(SearchVO search);
+
+    @Update({"<script>",
+            "update review",
+            "set reply = #{reply}, reply_created = now()",
+            "WHERE review_id=#{review_id}",
+            "</script>"})
+    int updateReview(ReviewVO review);
 }

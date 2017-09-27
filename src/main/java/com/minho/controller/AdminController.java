@@ -2,9 +2,7 @@ package com.minho.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minho.ConfigConstant;
-import com.minho.domain.AnswerVO;
-import com.minho.domain.CategoryVO;
-import com.minho.domain.QuestionVO;
+import com.minho.domain.*;
 import com.minho.persistence.AdminMapper;
 import com.minho.result.Result;
 import com.minho.result.ResultDataTotal;
@@ -215,6 +213,22 @@ public class AdminController {
     @DeleteMapping(value="/answer")
     public Result removeAnswer(@RequestParam int answer_id) {
         int result = adminMapper.deleteAnswer(answer_id);
+        if (result > 0) {
+            return new Result(0, "success");
+        } else {
+            return new Result(100, "fail");
+        }
+    }
+
+    // 리뷰관리
+    @PostMapping(value="/review")
+    public List<ReviewVO> findReview(@RequestParam SearchVO search) {
+        return adminMapper.selectReview(search);
+    }
+
+    @PutMapping(value="/review")
+    public Result modifyReview(@RequestBody ReviewVO review) {
+        int result = adminMapper.updateReview(review);
         if (result > 0) {
             return new Result(0, "success");
         } else {
