@@ -149,12 +149,18 @@ public interface AdminMapper {
 
     // 리뷰관리
     @Select({"<script>",
-            "SELECT review.*, answer.teacher, answer.title",
+            "SELECT review.*, member.nickname, answer.teacher, answer.title",
             "FROM review inner join answer on review.answer_id = answer.answer_id",
+            "inner join member on review.member_id = member.member_id",
             "order by review.updated desc",
             "LIMIT #{start_index}, #{page_size}",
             "</script>"})
     List<ReviewVO> selectReview(SearchVO search);
+
+    @Select({"<script>",
+            "SELECT count(*) FROM review",
+            "</script>"})
+    int countReview();
 
     @Update({"<script>",
             "update review",

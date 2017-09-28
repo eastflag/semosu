@@ -222,8 +222,8 @@ public class AdminController {
 
     // 리뷰관리
     @PostMapping(value="/review")
-    public List<ReviewVO> findReview(@RequestParam SearchVO search) {
-        return adminMapper.selectReview(search);
+    public Result findReview(@RequestBody SearchVO search) {
+        return new ResultDataTotal<>(0, "success", adminMapper.selectReview(search), adminMapper.countReview());
     }
 
     @PutMapping(value="/review")
