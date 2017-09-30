@@ -46,6 +46,14 @@ public interface UserMapper {
             "</script>"})
     List<QuestionVO> selectQuestion(int category_id);
 
+    @ResultMap("resultQuestion")
+    @Select({"<script>",
+            "select category.*, question.*",
+            "from question inner join category on question.category_id = category.category_id",
+            "where question_id = #{question_id}",
+            "</script>"})
+    QuestionVO selectOneQuestion(int question_id);
+
     @Select({"<script>",
             "SELECT A.*, (select count(*) from review where review.answer_id = A.answer_id) as review_count,",
             "(select avg(rate) from review where review.answer_id = A.answer_id) as review_rate",

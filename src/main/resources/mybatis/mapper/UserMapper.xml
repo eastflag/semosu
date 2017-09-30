@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.minho.persistence.UserMapper">
+
+	<resultMap id="resultQuestion" type="QuestionVO" >
+		<id property="question_id" column="question_id" />
+		<result property="number" column="number" />
+		<result property="sort_order" column="sort_order" />
+		<result property="distribution" column="distribution" />
+		<result property="correct_rate" column="correct_rate" />
+		<result property="image" column="image" />
+		<association property="category" javaType="CategoryVO">
+			<result property="category_id" column="category_id" />
+			<result property="name" column="name" />
+			<result property="test_date" column="test_date" />
+			<result property="grade_cut" column="grade_cut" />
+			<result property="use_flag" column="use_flag" />
+		</association>
+	</resultMap>
+
+</mapper>

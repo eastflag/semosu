@@ -26,11 +26,14 @@
         <typeAlias type="com.eastflag.domain.FeedbackVO" alias="FeedbackVO" />
     </typeAliases>-->
 
-    <!--<typeAliases>
-        <package name="com.center.domain" />
-    </typeAliases>-->
-<!--    <mappers>
-        <mapper resource="mybatis/mapper/BoardMapper.xml" />
-    </mappers>-->
+    <!-- This is needed for mappers tag-->
+    <typeAliases>
+        <package name="com.minho.domain" />
+    </typeAliases>
+
+    <!-- This is needed for using result map-->
+    <mappers>
+        <mapper resource="mybatis/mapper/UserMapper.xml" />
+    </mappers>
 
 </configuration>

@@ -26,27 +26,6 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    //
-    @GetMapping(value="/categoryByParent")
-    public List<CategoryVO> findCategoryByParent(@RequestParam int parent_category_id) {
-        return userMapper.selectCategoryByParent(parent_category_id);
-    }
-
-    @GetMapping(value="/category")
-    public CategoryVO findOneCategory(@RequestParam int category_id) {
-        return userMapper.selectOneCategory(category_id);
-    }
-
-    @GetMapping(value="/question")
-    public List<QuestionVO> findQuestion(@RequestParam int category_id) {
-        return userMapper.selectQuestion(category_id);
-    }
-
-    @GetMapping(value="/answer")
-    public List<AnswerVO> findAnswer(@RequestParam int question_id) {
-        return userMapper.selectAnswer(question_id);
-    }
-
     //회원가입
     @Transactional
     @RequestMapping("/register")
@@ -105,6 +84,32 @@ public class UserController {
         } else {
             return new Result(451, "비밀번호가 맞지 않습니다. 다시 확인해주세요.");
         }
+    }
+
+    // 연도별 문제---------------------------------------------------------------------------------------------------------
+    @GetMapping(value="/categoryByParent")
+    public List<CategoryVO> findCategoryByParent(@RequestParam int parent_category_id) {
+        return userMapper.selectCategoryByParent(parent_category_id);
+    }
+
+    @GetMapping(value="/category")
+    public CategoryVO findOneCategory(@RequestParam int category_id) {
+        return userMapper.selectOneCategory(category_id);
+    }
+
+    @GetMapping(value="/question")
+    public List<QuestionVO> findQuestion(@RequestParam int category_id) {
+        return userMapper.selectQuestion(category_id);
+    }
+
+    @GetMapping(value="/oneQuestion")
+    public QuestionVO findOneQuestion(@RequestParam int question_id) {
+        return userMapper.selectOneQuestion(question_id);
+    }
+
+    @GetMapping(value="/answer")
+    public List<AnswerVO> findAnswer(@RequestParam int question_id) {
+        return userMapper.selectAnswer(question_id);
     }
 
     //게시판 -----------------------------------------------------------------------------------------------------------
