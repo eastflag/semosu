@@ -112,6 +112,11 @@ public class UserController {
         return userMapper.selectAnswer(question_id);
     }
 
+    @GetMapping(value="/oneAnswer")
+    public AnswerVO findOneAnswer(@RequestParam int answer_id) {
+        return userMapper.selectOneAnswer(answer_id);
+    }
+
     //게시판 -----------------------------------------------------------------------------------------------------------
     @PostMapping("/boardList")
     public ResultDataTotal<List<BoardVO>> getBoardList(@RequestBody BoardVO board) {

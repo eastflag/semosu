@@ -63,6 +63,13 @@ public interface UserMapper {
             "</script>"})
     List<AnswerVO> selectAnswer(int question_id);
 
+    @Select({"<script>",
+            "SELECT *",
+            "FROM answer",
+            "where answer_id = #{answer_id}",
+            "</script>"})
+    AnswerVO selectOneAnswer(int answer_id);
+
     // 게시판 ----------------------------------------------------------------------------------------------------------
     @Select({"<script>",
             "SELECT B.*, M.nickname, (select count(*) from  comment where board_id = B.board_id) as comment_count",
