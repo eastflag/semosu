@@ -17,6 +17,7 @@ public class QuestionVO extends SearchVO{
     private Integer distribution;
     private Integer correct_rate;
     private String image;
+    private String answer;
     private String created;
     private String updated;
 

@@ -80,8 +80,8 @@ public interface AdminMapper {
 
     @Options(useGeneratedKeys = true, keyProperty = "question_id")
     @Insert({"<script>",
-            "INSERT INTO question(category_id, number, sort_order, content, distribution, correct_rate, image, created)",
-            "VALUES(#{category_id}, #{number}, #{sort_order}, #{content}, #{distribution}, #{correct_rate}, #{image}, now())",
+            "INSERT INTO question(category_id, number, sort_order, content, answer, distribution, correct_rate, image, created)",
+            "VALUES(#{category_id}, #{number}, #{sort_order}, #{content}, #{answer}, #{distribution}, #{correct_rate}, #{image}, now())",
             "</script>"})
     int insertQuestion(QuestionVO question);
 
@@ -92,6 +92,7 @@ public interface AdminMapper {
             "<if test='number!=null'>number = #{number},</if>",
             "<if test='sort_order!=null'>sort_order = #{sort_order},</if>",
             "<if test='content!=null'>content = #{content},</if>",
+            "<if test='answer!=null'>answer = #{answer},</if>",
             "<if test='distribution!=null'>distribution = #{distribution},</if>",
             "<if test='correct_rate!=null'>correct_rate = #{correct_rate},</if>",
             "<if test='image!=null'>image = #{image},</if>",
