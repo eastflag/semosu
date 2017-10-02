@@ -70,6 +70,31 @@ public interface UserMapper {
             "</script>"})
     AnswerVO selectOneAnswer(int answer_id);
 
+    // 즐겨찾기 --------------------------------------------------------------------------------------------------------
+    @Select({"<script>",
+            "SELECT * FROM favorite",
+            "WHERE member_id = #{member_id} and answer_id = #{answer_id}",
+            "</script>"})
+    FavoriteVO selectOneFavorite(FavoriteVO favorite);
+
+    @Insert({"<script>",
+            "INSERT INTO favorite(member_id, answer_id, exist)",
+            "VALUES(#{member_id}, #{answer_id}, 1)",
+            "</script>"})
+    int insertFavorite(FavoriteVO favorite);
+
+    @Update({"<script>",
+            "UPDATE favorite set exist = #{exist})",
+            "where favorite_id = #{favorite_id}",
+            "</script>"})
+    int updateFavorite(FavoriteVO favorite);
+
+    @Delete({"<script>",
+            "DELETE FROM favorite",
+            "where favorite_id = #{favorite_id}",
+            "</script>"})
+    int deleteFavorite(FavoriteVO favorite);
+
     // 게시판 ----------------------------------------------------------------------------------------------------------
     @Select({"<script>",
             "SELECT B.*, M.nickname, (select count(*) from  comment where board_id = B.board_id) as comment_count",
