@@ -19,17 +19,22 @@
 
     <!-- Continue going here -->
 
-<!--    <typeAliases>
-        <typeAlias type="com.eastflag.domain.AnswerVO" alias="AnswerVO" />
-        <typeAlias type="com.eastflag.domain.BoardsVO" alias="BoardsVO" />
-        <typeAlias type="com.eastflag.domain.BoardVO" alias="BoardVO" />
-        <typeAlias type="com.eastflag.domain.FeedbackVO" alias="FeedbackVO" />
-    </typeAliases>-->
-
-    <!-- This is needed for mappers tag-->
     <typeAliases>
-        <package name="com.minho.domain" />
+        <typeAlias type="com.minho.domain.AnswerVO" alias="AnswerVO" />
+        <typeAlias type="com.minho.domain.BoardVO" alias="BoardVO" />
+        <typeAlias type="com.minho.domain.CategoryVO" alias="CategoryVO" />
+        <typeAlias type="com.minho.domain.CommentVO" alias="CommentVO" />
+        <typeAlias type="com.minho.domain.FavoriteVO" alias="FavoriteVO" />
+        <typeAlias type="com.minho.domain.MemberVO" alias="MemberVO" />
+        <typeAlias type="com.minho.domain.QuestionVO" alias="QuestionVO" />
+        <typeAlias type="com.minho.domain.ReviewVO" alias="ReviewVO" />
+        <typeAlias type="com.minho.domain.SearchVO" alias="SearchVO" />
     </typeAliases>
+
+    <!-- This is needed for mappers tag But this do not work for production-->
+<!--    <typeAliases>
+        <package name="com.minho.domain" />
+    </typeAliases>-->
 
     <!-- This is needed for using result map-->
     <mappers>
