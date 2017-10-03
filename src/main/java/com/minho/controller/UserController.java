@@ -193,4 +193,25 @@ public class UserController {
         userMapper.deleteReview(review_id);
         return new Result(0, "success");
     }
+
+    //즐겨찾기----------------------------------------------------------------------------------------------------------
+    @GetMapping("/favorite")
+    public FavoriteVO findOneFavorite(@RequestParam int member_id, @RequestParam int answer_id) {
+        FavoriteVO favorite = new FavoriteVO();
+        favorite.setMember_id(member_id);
+        favorite.setAnswer_id(answer_id);
+        return userMapper.selectOneFavorite(favorite);
+    }
+
+    @PostMapping("/favorite")
+    public FavoriteVO togglefavorite(@RequestBody FavoriteVO favorite) {
+        if (favorite.getExist() == null) {
+            userMapper.insertFavorite(favorite);
+        } else {
+            // 즐겨찾기를 반대로 toggle 한다.
+            favorite.setExist(!favorite.getExist());
+            userMapper.updateFavorite(favorite);
+        }
+        return userMapper.selectOneFavorite(favorite);
+    }
 }
