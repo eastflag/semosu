@@ -195,7 +195,7 @@ public class UserController {
     }
 
     //즐겨찾기----------------------------------------------------------------------------------------------------------
-    @GetMapping("/favorite")
+    @GetMapping("/oneFavorite")
     public FavoriteVO findOneFavorite(@RequestParam int member_id, @RequestParam int answer_id) {
         FavoriteVO favorite = new FavoriteVO();
         favorite.setMember_id(member_id);
@@ -203,7 +203,7 @@ public class UserController {
         return userMapper.selectOneFavorite(favorite);
     }
 
-    @PostMapping("/favorite")
+    @PutMapping("/favorite")
     public FavoriteVO togglefavorite(@RequestBody FavoriteVO favorite) {
         if (favorite.getExist() == null) {
             userMapper.insertFavorite(favorite);
@@ -213,5 +213,11 @@ public class UserController {
             userMapper.updateFavorite(favorite);
         }
         return userMapper.selectOneFavorite(favorite);
+    }
+
+    @PostMapping("/favorite")
+    public Result findFavorite(@RequestBody FavoriteVO favorite) {
+        return new ResultDataTotal<>(0, "success",userMapper.selectFavorite(favorite),
+                userMapper.countFavorite(favorite));
     }
 }

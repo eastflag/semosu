@@ -183,4 +183,22 @@ public interface UserMapper {
             "where favorite_id = #{favorite_id}",
             "</script>"})
     int updateFavorite(FavoriteVO favorite);
+
+    @Select({"<script>",
+            "SELECT favorite_id, F.answer_id, F.updated, C.name, Q.number, Q.content, A.teacher, A.title",
+            "FROM favorite F inner join answer A on F.answer_id = A.answer_id",
+            "inner join question Q on A.question_id = Q.question_id",
+            "inner join category C on Q.category_id = C.category_id",
+            "WHERE F.member_id = #{member_id} and F.exist = 1",
+            "order by F.updated desc",
+            "LIMIT #{start_index}, #{page_size}",
+            "</script>"})
+    List<FavoriteVO> selectFavorite(FavoriteVO favorite);
+
+    @Select({"<script>",
+            "SELECT count(*)",
+            "FROM favorite F",
+            "WHERE F.member_id = #{member_id} and F.exist = 1",
+            "</script>"})
+    int countFavorite(FavoriteVO favorite);
 }
