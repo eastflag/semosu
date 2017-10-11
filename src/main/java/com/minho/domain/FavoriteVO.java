@@ -14,6 +14,7 @@ public class FavoriteVO extends SearchVO {
     private String updated;
 
     //result map
+    private Integer question_id;
     private String name;
     private String number;
     private String content;

@@ -167,8 +167,8 @@ public interface UserMapper {
 
     // 즐겨찾기 --------------------------------------------------------------------------------------------------------
     @Select({"<script>",
-            "SELECT * FROM favorite",
-            "WHERE member_id = #{member_id} and answer_id = #{answer_id}",
+            "SELECT favorite.*, answer.question_id FROM favorite inner join answer on favorite.answer_id = answer.answer_id",
+            "WHERE member_id = #{member_id} and favorite.answer_id = #{answer_id}",
             "</script>"})
     FavoriteVO selectOneFavorite(FavoriteVO favorite);
 
