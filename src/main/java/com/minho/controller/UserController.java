@@ -94,7 +94,9 @@ public class UserController {
 
     @GetMapping(value="/category")
     public CategoryVO findOneCategory(@RequestParam int category_id) {
-        return userMapper.selectOneCategory(category_id);
+        CategoryVO category = userMapper.selectOneCategory(category_id);
+        category.setParent_name(userMapper.selectRootLevel(category_id));
+        return category;
     }
 
     @GetMapping(value="/question")

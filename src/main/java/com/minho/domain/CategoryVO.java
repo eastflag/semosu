@@ -21,4 +21,5 @@ public class CategoryVO {
 
     private List<CategoryVO> children;
     private int count;
+    private String parent_name;
 }

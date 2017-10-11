@@ -201,4 +201,17 @@ public interface UserMapper {
             "WHERE F.member_id = #{member_id} and F.exist = 1",
             "</script>"})
     int countFavorite(FavoriteVO favorite);
+
+    // root 레벨 바로 아래 레벨 찾기
+    @Select({"<script>",
+            "select name from",
+            "(",
+            "select @r as _id, (select @r:=parent_category_id from category where category_id = _id) as _parent_id,",
+            "(select name from category where category_id =_id) as name",
+            "from (select @r:=#{category_id}) B, category",
+            "where @r <![CDATA[<>]]> 0",
+            ") A",
+            "where A._parent_id between 2 and 4",
+            "</script>"})
+    String selectRootLevel(int category_id);
 }
