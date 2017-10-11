@@ -10,6 +10,7 @@
 		<result property="distribution" column="distribution" />
 		<result property="correct_rate" column="correct_rate" />
 		<result property="image" column="image" />
+		<result property="answer" column="answer" />
 		<association property="category" javaType="CategoryVO">
 			<result property="category_id" column="category_id" />
 			<result property="name" column="name" />
