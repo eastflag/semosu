@@ -16,6 +16,8 @@ public class AnswerVO {
     private String youtube;
     private Boolean charged;
     private Integer sort_order;
+    private String start;
+    private String end;
     private String created;
     private String updated;
 

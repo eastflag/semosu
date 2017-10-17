@@ -72,7 +72,9 @@ public interface UserMapper {
 
     // 게시판 ----------------------------------------------------------------------------------------------------------
     @Select({"<script>",
-            "SELECT B.*, M.nickname, (select count(*) from  comment where board_id = B.board_id) as comment_count",
+            "SELECT B.board_id, B.board_type, B.title, B.member_id, DATE_FORMAT(B.created,'%Y-%m-%d %H:%i') as created,",
+            "DATE_FORMAT(B.updated,'%Y-%m-%d %H:%i') as updated, M.nickname, (select count(*)",
+            "from  comment where board_id = B.board_id) as comment_count",
             "FROM board B inner join member M on B.member_id = M.member_id",
             "WHERE board_type=#{board_type}",
             "ORDER BY B.board_id desc",
@@ -140,7 +142,10 @@ public interface UserMapper {
 
     // 리뷰 ----------------------------------------------------------------------------------------------------------
     @Select({"<script>",
-            "SELECT review.*, member.nickname FROM review inner join member on review.member_id = member.member_id",
+            "SELECT review.review_id, review.member_id, review.answer_id, review.rate, review.content, review.reply,",
+            "DATE_FORMAT(review.created,'%Y-%m-%d %H:%i') as created, DATE_FORMAT(review.updated,'%Y-%m-%d %H:%i') as updated,",
+            "DATE_FORMAT(reply_created,'%Y-%m-%d %H:%i') as reply_created, member.nickname",
+            "FROM review inner join member on review.member_id = member.member_id",
             "where answer_id=#{answer_id}",
             "order by review_id desc",
             "</script>"})
