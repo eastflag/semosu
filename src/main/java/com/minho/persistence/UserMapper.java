@@ -190,7 +190,7 @@ public interface UserMapper {
     int updateFavorite(FavoriteVO favorite);
 
     @Select({"<script>",
-            "SELECT favorite_id, F.answer_id, F.updated, C.name, Q.number, Q.content, A.teacher, A.title",
+            "SELECT favorite_id, F.answer_id, F.updated, C.name, Q.question_id, Q.number, Q.content, A.teacher, A.title",
             "FROM favorite F inner join answer A on F.answer_id = A.answer_id",
             "inner join question Q on A.question_id = Q.question_id",
             "inner join category C on Q.category_id = C.category_id",
