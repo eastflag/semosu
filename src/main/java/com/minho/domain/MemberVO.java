@@ -12,6 +12,8 @@ public class MemberVO {
     private String email;
     private String nickname;
     private String pw;
+    private String photo_url;
+    private String join_path;
     private String created;
     private String updated;
     //private ArrayList<String> role;
