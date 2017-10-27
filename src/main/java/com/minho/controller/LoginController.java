@@ -74,8 +74,8 @@ public class LoginController {
         //String authUri = "https://nid.naver.com/oauth2.0/authorize";
         String tokenUri = "https://nid.naver.com/oauth2.0/token";
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        parameters.add("client_id", "7aWy98Ywds8IV1NEXUAL");
-        parameters.add("client_secret", "fa1vHElxst");
+        parameters.add("client_id", "r0hXyiQbbJwWmmy8nq2U");
+        parameters.add("client_secret", "g145ci996K");
         parameters.add("grant_type", "authorization_code");
         parameters.add("state", state);
         parameters.add("code", code);
