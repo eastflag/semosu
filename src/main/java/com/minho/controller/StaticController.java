@@ -95,6 +95,66 @@ public class StaticController {
         }
     }
 
+    @RequestMapping("/kakao_callback")
+    public String kakaoLogin(@RequestParam String code, HttpSession session) {
+        //access token 조회--------------------------------------------------------------
+        RestTemplate restTemplate = new RestTemplate();
+
+        String tokenUri = "https://kauth.kakao.com/oauth/token";
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        parameters.add("client_id", "7cbf743459adef91cc9af0231f094ed6");
+        //parameters.add("client_secret", "g145ci996K");
+        parameters.add("grant_type", "authorization_code");
+        parameters.add("code", code);
+        parameters.add("redirect_uri", "http://"+ configConstant.backendHost + "/kakao_callback");
+
+        String token =  restTemplate.postForObject(tokenUri, parameters, String.class);
+        System.out.println("token:" + token);
+
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(token).getAsJsonObject();
+
+        String access_token = json.get("access_token").getAsString();
+        String refresh_token = json.get("refresh_token").getAsString();
+
+        System.out.println("access token:" + access_token);
+        System.out.println("refresh_token:" + refresh_token);
+
+        //프로파일 정보 조회--------------------------------------------------------------
+        String profileUri = "https://kapi.kakao.com/v1/user/me";
+        parameters.clear();
+        parameters.add("", "");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + access_token);
+        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity<String> response = restTemplate.exchange(profileUri, HttpMethod.GET, entity, String.class);
+        System.out.println("response:" + response.getBody());
+        //{"kaccount_email":"minotech1@hanmail.net","kaccount_email_verified":true,"id":545546886,"properties":
+        // {"profile_image":"http://k.kakaocdn.net/dn/bbP1JA/btqhAzeM8r6/kXrvkLaJtKIh4Qso7jRbr0/img_640x640.jpg",
+        // "nickname":"김민호","thumbnail_image":"http://k.kakaocdn.net/dn/bbP1JA/btqhAzeM8r6/kXrvkLaJtKIh4Qso7jRbr0/img_110x110.jpg"}}
+
+        //jwt를 생성하여 client에게 넘겨준다.
+        JsonObject body = parser.parse(response.getBody()).getAsJsonObject();
+        String email = body.get("kaccount_email").getAsString();
+        JsonObject properties = body.getAsJsonObject("properties");
+        String photo_url = properties.get("profile_image").getAsString();
+
+        MemberVO inMember = new MemberVO();
+        inMember.setEmail(email);
+        inMember.setJoin_path("kakao");
+        inMember.setPhoto_url(photo_url);
+
+        MemberVO member = loginMapper.selectMember(inMember);
+        if (member == null) {
+            return String.format("redirect:http://%s/login?result=100&email=%s&join_path=%s&photo_url=%s",
+                    configConstant.frontendHost, email, "kakao", photo_url);
+        } else {
+            getToken(member);
+            return String.format("redirect:http://%s/login?result=0&token=%s", configConstant.frontendHost, member.getToken());
+        }
+    }
+
     /**
      * 토큰 발행: id:  member_id, issuer: email, subject: role
      * @param member

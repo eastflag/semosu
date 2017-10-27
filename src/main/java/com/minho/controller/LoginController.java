@@ -62,6 +62,10 @@ public class LoginController {
             String url = "https://nid.naver.com/oauth2.0/authorize?client_id=r0hXyiQbbJwWmmy8nq2U" +
                     "&response_type=code&redirect_uri=http://" + configConstant.backendHost + "/naver_callback&state=" + state;
             social.setUrl(url);
+        } else if ("kakao".equals(site)) {
+            String url = "https://kauth.kakao.com/oauth/authorize?client_id=7cbf743459adef91cc9af0231f094ed6" +
+                    "&redirect_uri=http://" + configConstant.backendHost + "/kakao_callback&response_type=code";
+            social.setUrl(url);
         }
 
         return social;
