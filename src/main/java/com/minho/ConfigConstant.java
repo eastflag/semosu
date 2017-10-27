@@ -17,6 +17,6 @@ public class ConfigConstant {
     @Value("${backend.host}")
     public String backendHost;
 
-    @Value("${front.host}")
-    public String frontHost;
+    @Value("${frontend.host}")
+    public String frontendHost;
 }

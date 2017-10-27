@@ -123,10 +123,10 @@ public class LoginController {
 
         MemberVO member = loginMapper.selectMember(inMember);
         if (member == null) {
-            return String.format("redirect:http://%s/login?result=100", configConstant.frontHost);
+            return String.format("redirect:http://%s/login?result=100", configConstant.frontendHost);
         } else {
             getToken(member);
-            return String.format("redirect:http://%s/login?result=0&token=%s", configConstant.frontHost, member.getToken());
+            return String.format("redirect:http://%s/login?result=0&token=%s", configConstant.frontendHost, member.getToken());
         }
     }
 
