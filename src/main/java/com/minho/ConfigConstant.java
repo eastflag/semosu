@@ -13,4 +13,10 @@ public class ConfigConstant {
 
     @Value("${upload.question.folder}")
     public String uploadQuestionFolder;
+
+    @Value("${backend.host}")
+    public String backendHost;
+
+    @Value("${front.host}")
+    public String frontHost;
 }
