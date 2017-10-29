@@ -18,6 +18,11 @@ public interface LoginMapper {
     MemberVO selectMember(MemberVO member);
 
     @Select({"<script>",
+            "SELECT * FROM member WHERE nickname= #{nickname}",
+            "</script>"})
+    MemberVO selectMemberByNickname(MemberVO member);
+
+    @Select({"<script>",
             "SELECT * FROM auth WHERE member_id= #{member_id}",
             "</script>"})
     List<AuthVO> selectAuth(MemberVO member);

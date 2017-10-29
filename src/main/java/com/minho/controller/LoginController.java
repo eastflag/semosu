@@ -35,10 +35,15 @@ public class LoginController {
     private LoginMapper loginMapper;
 
     @PostMapping(value="/api/signUp")
-    public MemberVO signup(@RequestBody MemberVO member) {
-        loginMapper.insertMember(member);
-        getToken(member);
-        return member;
+    public Result signup(@RequestBody MemberVO inMember) {
+        MemberVO member = loginMapper.selectMemberByNickname(inMember);
+        if (member == null) {
+            loginMapper.insertMember(inMember);
+            getToken(inMember);
+            return new ResultData(0, "success", inMember);
+        } else {
+            return new Result(100, "닉네임 중복");
+        }
     }
 
     @PostMapping(value="/api/login")
