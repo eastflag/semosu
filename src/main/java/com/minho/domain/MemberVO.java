@@ -14,6 +14,7 @@ public class MemberVO {
     private String pw;
     private String photo_url;
     private String join_path;
+    private Boolean is_used;
     private String created;
     private String updated;
     //private ArrayList<String> role;

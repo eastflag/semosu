@@ -27,7 +27,7 @@ public class UserController {
     private UserMapper userMapper;
 
     //회원가입
-    @Transactional
+    /*@Transactional
     @RequestMapping("/register")
     public Result addMember(@RequestBody MemberVO inMember) {
         inMember.setEmail(inMember.getEmail());
@@ -84,7 +84,7 @@ public class UserController {
         } else {
             return new Result(451, "비밀번호가 맞지 않습니다. 다시 확인해주세요.");
         }
-    }
+    }*/
 
     // 연도별 문제---------------------------------------------------------------------------------------------------------
     @GetMapping(value="/categoryByParent")

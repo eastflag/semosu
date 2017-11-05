@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import com.minho.ConfigConstant;
 import com.minho.Constant;
 import com.minho.domain.AuthVO;
+import com.minho.domain.MemberLogVO;
 import com.minho.domain.MemberVO;
 import com.minho.domain.SocialVO;
 import com.minho.persistence.LoginMapper;
@@ -38,7 +39,21 @@ public class LoginController {
     public Result signup(@RequestBody MemberVO inMember) {
         MemberVO member = loginMapper.selectMemberByNickname(inMember);
         if (member == null) {
-            loginMapper.insertMember(inMember);
+            // 탈퇴 여부 확인
+            int result = loginMapper.checkMemberLog(inMember.getEmail());
+            if (result == 0) {
+                loginMapper.insertMember(inMember);
+            } else {
+                // 탈퇴 로그에 join 추가
+                MemberLogVO memberLog = new MemberLogVO();
+                memberLog.setEmail(inMember.getEmail());
+                memberLog.setType("join");
+                loginMapper.insertMemberLog(memberLog);
+                // 멤버 is_used 변경
+                inMember = loginMapper.selectMember(inMember);
+                inMember.setIs_used(true);
+                loginMapper.updateMember(inMember);
+            }
             getToken(inMember);
             return new ResultData(0, "success", inMember);
         } else {
@@ -48,6 +63,7 @@ public class LoginController {
 
     @PostMapping(value="/api/login")
     public Result login(@RequestBody MemberVO inMember) {
+        inMember.setIs_used(true);
         MemberVO member = loginMapper.selectMember(inMember);
         if (member == null) {
             return new Result(100, "do not exist");
@@ -55,6 +71,23 @@ public class LoginController {
             getToken(member);
             return new ResultData<>(0, "success", member);
         }
+    }
+
+    @PutMapping(value="/api/nickname")
+    public Result modifyNickname(@RequestBody MemberVO inMember) {
+        int result = loginMapper.checkNickname(inMember);
+        if (result > 0) {
+            return new Result(100, "닉네임 중복. 다른 닉네임을 사용하세요");
+        } else {
+            loginMapper.updateNickname(inMember);
+            return new Result(0, "success");
+        }
+
+    }
+
+    @GetMapping(value="/api/nickname")
+    public MemberVO modifyNickname(@RequestParam int member_id) {
+        return loginMapper.selectNickname(member_id);
     }
 
     @RequestMapping("/api/social")
@@ -76,6 +109,17 @@ public class LoginController {
         return social;
     }
 
+    @PostMapping(value="/api/leave")
+    public Result leave(@RequestBody MemberVO member) {
+        MemberLogVO memberLog = new MemberLogVO();
+        memberLog.setType("leave");
+        loginMapper.insertMemberLog(memberLog);
+
+        member = loginMapper.selectMember(member);
+        member.setIs_used(false);
+        loginMapper.updateMember(member);
+        return new Result(0, "success");
+    }
 
 
     /**
