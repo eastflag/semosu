@@ -112,6 +112,7 @@ public class LoginController {
     @PostMapping(value="/api/leave")
     public Result leave(@RequestBody MemberVO member) {
         MemberLogVO memberLog = new MemberLogVO();
+        memberLog.setEmail(member.getEmail());
         memberLog.setType("leave");
         loginMapper.insertMemberLog(memberLog);
 

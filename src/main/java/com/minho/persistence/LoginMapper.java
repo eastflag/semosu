@@ -18,7 +18,9 @@ public interface LoginMapper {
     MemberVO selectMember(MemberVO member);
 
     @Select({"<script>",
-            "SELECT * FROM member WHERE nickname= #{nickname}",
+            "SELECT * FROM member",
+            "WHERE nickname= #{nickname}",
+            "and email != #{email}",
             "</script>"})
     MemberVO selectMemberByNickname(MemberVO member);
 
