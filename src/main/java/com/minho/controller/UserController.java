@@ -202,8 +202,11 @@ public class UserController {
         return userMapper.selectRateTotal(answer_id);
     }
 
-    @PostMapping("/rate")
-    public RateVO findRate(@RequestBody RateVO rate) {
+    @GetMapping("/rate")
+    public RateVO findRate(@RequestParam int answer_id, @RequestParam int member_id) {
+        RateVO rate = new RateVO();
+        rate.setAnswer_id(answer_id);
+        rate.setMember_id(member_id);
         return userMapper.selectRate(rate);
     }
 
