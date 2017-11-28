@@ -219,4 +219,29 @@ public interface UserMapper {
             "where A._parent_id between 2 and 4",
             "</script>"})
     String selectRootLevel(int category_id);
+
+    // 평점 -----------------------
+    @Select({"<script>",
+            "select IFNULL(ROUND(avg(rate), 1), 0) as 'avg', count(*) as 'count'",
+            "from rate where answer_id = #{answer_id}",
+            "</script>"})
+    RateTotalVO selectRateTotal(int answer_id);
+
+    @Select({"<script>",
+            "select rate_id, rate",
+            "from rate where answer_id = #{answer_id} and member_id = #{member_id}",
+            "</script>"})
+    RateVO selectRate(RateVO rate);
+
+    @Insert({"<script>",
+            "INSERT INTO rate(member_id, answer_id, rate, created)",
+            "VALUES(#{member_id}, #{answer_id}, #{rate}, now())",
+            "</script>"})
+    int insertRate(RateVO rate);
+
+    @Update({"<script>",
+            "UPDATE rate set rate = #{rate}",
+            "where rate_id = #{rate_id}",
+            "</script>"})
+    int updateRate(RateVO rate);
 }

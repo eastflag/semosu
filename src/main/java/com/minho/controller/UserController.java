@@ -196,6 +196,29 @@ public class UserController {
         return new Result(0, "success");
     }
 
+    // 평점-------------------------------------------------------------------------------------------------------------
+    @GetMapping("/rate_total")
+    public RateTotalVO findRateTotal(@RequestParam int answer_id) {
+        return userMapper.selectRateTotal(answer_id);
+    }
+
+    @PostMapping("/rate")
+    public RateVO findRate(@RequestBody RateVO rate) {
+        return userMapper.selectRate(rate);
+    }
+
+    @PostMapping("/rate")
+    public Result addRate(@RequestBody RateVO rate) {
+        userMapper.insertRate(rate);
+        return new Result(0, "success");
+    }
+
+    @PutMapping("/rate")
+    public Result modifyRate(@RequestBody RateVO rate) {
+        userMapper.updateRate(rate);
+        return new Result(0, "success");
+    }
+
     //즐겨찾기----------------------------------------------------------------------------------------------------------
     @GetMapping("/oneFavorite")
     public FavoriteVO findOneFavorite(@RequestParam int member_id, @RequestParam int answer_id) {
