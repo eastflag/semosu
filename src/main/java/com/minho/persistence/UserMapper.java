@@ -55,8 +55,8 @@ public interface UserMapper {
     QuestionVO selectOneQuestion(int question_id);
 
     @Select({"<script>",
-            "SELECT A.*, (select count(*) from review where review.answer_id = A.answer_id) as review_count,",
-            "(select round(avg(rate), 1) from review where review.answer_id = A.answer_id) as review_rate",
+            "SELECT A.*, (select count(*) from rate where rate.answer_id = A.answer_id) as review_count,",
+            "(select round(avg(rate), 1) from rate where rate.answer_id = A.answer_id) as review_rate",
             "FROM answer A",
             "where question_id = #{question_id}",
             "order by sort_order asc",
