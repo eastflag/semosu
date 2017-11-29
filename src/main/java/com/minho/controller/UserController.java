@@ -172,7 +172,7 @@ public class UserController {
         return new Result(0, "success");
     }
 
-    //리뷰--------------------------------------------------------------------------------------------------------------
+    // 정답 리뷰--------------------------------------------------------------------------------------------------------
     @GetMapping("/review")
     public List<ReviewVO> getreview(@RequestParam int answer_id) {
         return userMapper.selectReviewList(answer_id);
@@ -193,6 +193,30 @@ public class UserController {
     @DeleteMapping("/review")
     public Result removereview(@RequestParam int review_id) {
         userMapper.deleteReview(review_id);
+        return new Result(0, "success");
+    }
+
+    // 문제 리뷰--------------------------------------------------------------------------------------------------------
+    @GetMapping("/debate")
+    public List<DebateVO> getdebate(@RequestParam int question_id) {
+        return userMapper.selectDebateList(question_id);
+    }
+
+    @PostMapping("/debate")
+    public Result adddebate(@RequestBody DebateVO debate) {
+        userMapper.insertDebate(debate);
+        return new Result(0, "success");
+    }
+
+    @PutMapping("/debate")
+    public Result modifydebate(@RequestBody DebateVO debate) {
+        userMapper.updateDebate(debate);
+        return new Result(0, "success");
+    }
+
+    @DeleteMapping("/debate")
+    public Result removedebate(@RequestParam int debate_id) {
+        userMapper.deleteDebate(debate_id);
         return new Result(0, "success");
     }
 

@@ -140,7 +140,7 @@ public interface UserMapper {
             "</script>"})
     int deleteComment(int comment_id);
 
-    // 리뷰 ----------------------------------------------------------------------------------------------------------
+    // 정답 리뷰 -------------------------------------------------------------------------------------------------------
     @Select({"<script>",
             "SELECT review.review_id, review.member_id, review.answer_id, review.content, review.reply,",
             "DATE_FORMAT(review.created,'%Y-%m-%d %H:%i') as created, DATE_FORMAT(review.updated,'%Y-%m-%d %H:%i') as updated,",
@@ -169,6 +169,36 @@ public interface UserMapper {
             "WHERE review_id = #{review_id}",
             "</script>"})
     int deleteReview(int review_id);
+
+    // 문제 리뷰 -------------------------------------------------------------------------------------------------------
+    @Select({"<script>",
+            "SELECT debate.debate_id, debate.member_id, debate.question_id, debate.content,",
+            "DATE_FORMAT(debate.created,'%Y-%m-%d %H:%i') as created, DATE_FORMAT(debate.updated,'%Y-%m-%d %H:%i') as updated,",
+            "member.nickname",
+            "FROM debate inner join member on debate.member_id = member.member_id",
+            "where question_id=#{question_id}",
+            "order by debate_id desc",
+            "</script>"})
+    List<DebateVO> selectDebateList(int question_id);
+
+    @Insert({"<script>",
+            "INSERT INTO debate(question_id, member_id, content, created)",
+            "VALUES(#{question_id}, #{member_id}, #{content}, now())",
+            "</script>"})
+    int insertDebate(DebateVO debate);
+
+    @Update({"<script>",
+            "UPDATE debate",
+            "set content = #{content}",
+            "WHERE debate_id = #{debate_id}",
+            "</script>"})
+    int updateDebate(DebateVO debate);
+
+    @Delete({"<script>",
+            "DELETE FROM debate",
+            "WHERE debate_id = #{debate_id}",
+            "</script>"})
+    int deleteDebate(int debate_id);
 
     // 즐겨찾기 --------------------------------------------------------------------------------------------------------
     @Select({"<script>",

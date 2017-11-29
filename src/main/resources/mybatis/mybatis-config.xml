@@ -25,6 +25,7 @@
         <typeAlias type="com.minho.domain.BoardVO" alias="BoardVO" />
         <typeAlias type="com.minho.domain.CategoryVO" alias="CategoryVO" />
         <typeAlias type="com.minho.domain.CommentVO" alias="CommentVO" />
+        <typeAlias type="com.minho.domain.DebateVO" alias="DebateVO" />
         <typeAlias type="com.minho.domain.FavoriteVO" alias="FavoriteVO" />
         <typeAlias type="com.minho.domain.MemberVO" alias="MemberVO" />
         <typeAlias type="com.minho.domain.QuestionVO" alias="QuestionVO" />
