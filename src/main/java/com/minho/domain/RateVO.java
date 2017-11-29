@@ -9,8 +9,8 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class RateVO {
-    private Integer rate_id;
-    private Integer answer_id;
-    private Integer member_id;
-    private Integer rate;
+    private int rate_id;
+    private int answer_id;
+    private int member_id;
+    private int rate;
 }

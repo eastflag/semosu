@@ -9,7 +9,6 @@ public class ReviewVO {
     private Integer review_id;
     private Integer answer_id;
     private Integer member_id;
-    private Integer rate;
     private String content;
     private String created;
     private String updated;

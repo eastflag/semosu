@@ -142,7 +142,7 @@ public interface UserMapper {
 
     // 리뷰 ----------------------------------------------------------------------------------------------------------
     @Select({"<script>",
-            "SELECT review.review_id, review.member_id, review.answer_id, review.rate, review.content, review.reply,",
+            "SELECT review.review_id, review.member_id, review.answer_id, review.content, review.reply,",
             "DATE_FORMAT(review.created,'%Y-%m-%d %H:%i') as created, DATE_FORMAT(review.updated,'%Y-%m-%d %H:%i') as updated,",
             "DATE_FORMAT(reply_created,'%Y-%m-%d %H:%i') as reply_created, member.nickname",
             "FROM review inner join member on review.member_id = member.member_id",
@@ -152,14 +152,14 @@ public interface UserMapper {
     List<ReviewVO> selectReviewList(int answer_id);
 
     @Insert({"<script>",
-            "INSERT INTO review(answer_id, member_id, rate, content, created)",
-            "VALUES(#{answer_id}, #{member_id}, #{rate}, #{content}, now())",
+            "INSERT INTO review(answer_id, member_id, content, created)",
+            "VALUES(#{answer_id}, #{member_id}, #{content}, now())",
             "</script>"})
     int insertReview(ReviewVO review);
 
     @Update({"<script>",
             "UPDATE review",
-            "set rate = #{rate}, content = #{content}",
+            "set content = #{content}",
             "WHERE review_id = #{review_id}",
             "</script>"})
     int updateReview(ReviewVO review);
@@ -228,7 +228,7 @@ public interface UserMapper {
     RateTotalVO selectRateTotal(int answer_id);
 
     @Select({"<script>",
-            "select rate_id, rate",
+            "select *",
             "from rate where answer_id = #{answer_id} and member_id = #{member_id}",
             "</script>"})
     RateVO selectRate(RateVO rate);

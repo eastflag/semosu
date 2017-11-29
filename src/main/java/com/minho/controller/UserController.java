@@ -210,15 +210,13 @@ public class UserController {
         return userMapper.selectRate(rate);
     }
 
+    // insert or update
     @PostMapping("/rate")
-    public Result addRate(@RequestBody RateVO rate) {
-        userMapper.insertRate(rate);
-        return new Result(0, "success");
-    }
-
-    @PutMapping("/rate")
-    public Result modifyRate(@RequestBody RateVO rate) {
-        userMapper.updateRate(rate);
+    public Result saveRate(@RequestBody RateVO rate) {
+        int result = userMapper.updateRate(rate);
+        if (result == 0) {
+            userMapper.insertRate(rate);
+        }
         return new Result(0, "success");
     }
 
