@@ -12,6 +12,5 @@ public class DebateVO {
     private String content;
     private String created;
     private String updated;
-
     private String nickname;
 }
