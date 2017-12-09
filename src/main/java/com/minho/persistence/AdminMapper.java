@@ -58,6 +58,7 @@ public interface AdminMapper {
     int deleteCategory(int category_id);
 
     // 문제관리 ----------------------------------------------------------------------
+/*
     @Select({"<script>",
             "SELECT *, (select count(*) from answer where question_id = Q.question_id) as answer_count from question Q",
             "where category_id = #{category_id}",
@@ -65,6 +66,44 @@ public interface AdminMapper {
             "LIMIT #{start_index}, #{page_size}",
             "</script>"})
     List<QuestionVO> selectQuestion(QuestionVO question);
+*/
+
+    @Select({"<script>",
+            "select question.*, num as answer_count , p_table.content as parent_question_content ",
+            "from question left join  ",
+            "( select question_id, count(*) as num from answer group by question_id ) as B  ",
+            "on question.question_id = B.question_id  ",
+            "left join question as p_table ",
+            "on question.parent_question_id = p_table.question_id ",
+            "where question.category_id = #{category_id} ",
+            "order by sort_order asc ",
+            "LIMIT #{start_index}, #{page_size} ",
+            "</script>"})
+    List<QuestionVO> selectQuestion(QuestionVO question);
+
+
+
+    @Select({"<script>",
+            "select ",
+            "A.question_id, A.content, A.sort_order, ",
+            "concat(B.question_id, B.image)  as image,",
+            "B.distribution ,",
+            "B.correct_rate ,",
+            "B.answer , A.parent_question_id , B.content as parent_question_content ",
+            "(",
+            "   select count(*) ",
+            "   from answer ",
+            "   where question_id = A.parent_question_id ",
+            ") as answer_count ",
+            "from ",
+            "question as A ",
+            "left join question as B ",
+            "on A.parent_question_id = B.question_id ",
+            "where A.category_id = #{category_id} ",
+            "order by sort_order ",
+            "LIMIT #{start_index}, #{page_size} ",
+            "</script>"})
+    List<QuestionVO> selectParentQuestion(QuestionVO question);
 
     @Select({"<script>",
             "SELECT count(*) from question",
@@ -89,12 +128,13 @@ public interface AdminMapper {
             "update question",
             "<trim prefix='set' suffixOverrides=','>",
             "<if test='category_id!=null'>category_id = #{category_id},</if>",
-            "<if test='number!=null'>number = #{number},</if>",
+//            "<if test='number!=null'>number = #{number},</if>",
             "<if test='sort_order!=null'>sort_order = #{sort_order},</if>",
             "<if test='content!=null'>content = #{content},</if>",
             "<if test='answer!=null'>answer = #{answer},</if>",
             "<if test='distribution!=null'>distribution = #{distribution},</if>",
             "<if test='correct_rate!=null'>correct_rate = #{correct_rate},</if>",
+            "<if test='parent_question_id!=null'>parent_question_id = #{parent_question_id},</if>",
             "<if test='image!=null'>image = #{image},</if>",
             "</trim>",
             "WHERE question_id=#{question_id}",

@@ -93,6 +93,17 @@ public class AdminController {
         return new ResultDataTotal<>(0, "success",adminMapper.selectQuestion(question), adminMapper.selectQuestionCount(question));
     }
 
+    //Parent 문제 관리--------------------
+    @GetMapping(value="/parent_question")
+    public Result findParentQuestion(@RequestParam int category_id, @RequestParam int start_index, @RequestParam int page_size) {
+        QuestionVO question = new QuestionVO();
+        question.setCategory_id(category_id);
+        question.setStart_index(start_index);
+        question.setPage_size(page_size);
+        return new ResultDataTotal<>(0, "success",adminMapper.selectParentQuestion(question), adminMapper.selectQuestionCount(question));
+    }
+
+
     @PostMapping(value="/question")
     public QuestionVO addQuestion(@RequestPart(value="file", required = false) MultipartFile file, @RequestPart("json") String inQuestion) {
         QuestionVO question = null;

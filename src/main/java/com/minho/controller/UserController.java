@@ -231,7 +231,10 @@ public class UserController {
         RateVO rate = new RateVO();
         rate.setAnswer_id(answer_id);
         rate.setMember_id(member_id);
-        return userMapper.selectRate(rate);
+        rate = userMapper.selectRate(rate);
+
+        return rate;
+
     }
 
     // insert or update

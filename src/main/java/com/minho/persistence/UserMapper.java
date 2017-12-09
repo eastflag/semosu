@@ -39,12 +39,36 @@ public interface UserMapper {
             "</script>"})
     CategoryVO selectOneCategory(int category_id);
 
-    @Select({"<script>",
+  /*  @Select({"<script>",
             "SELECT *, (select count(*) from answer where question_id = Q.question_id) as answer_count from question Q",
             "where category_id = #{category_id}",
             "order by sort_order asc",
             "</script>"})
+    List<QuestionVO> selectQuestion(int category_id);*/
+
+    @Select({"<script>",
+            "select ",
+            "A.question_id, A.content, A.sort_order, ",
+            "if(isnull(A.image), concat(B.question_id, B.image) , concat(A.question_id, A.image) ) as image, ",
+            "if(isnull(A.parent_question_id), A.distribution , B.distribution ) as distribution," ,
+            "if(isnull(A.parent_question_id), A.correct_rate , B.correct_rate ) as correct_rate,",
+            "if(isnull(A.parent_question_id), A.answer , B.answer ) as answer ,",
+            "( ",
+            "select count(*) ",
+            "from answer ",
+            "where question_id = A.question_id or question_id = A.parent_question_id ",
+            ") as answer_count ",
+            "from ",
+            "question as A ",
+            "left join question as B ",
+            "on A.parent_question_id = B.question_id ",
+            "where A.category_id = #{category_id} ",
+            "order by sort_order ",
+            "</script>"})
     List<QuestionVO> selectQuestion(int category_id);
+
+
+/*
 
     @ResultMap("resultQuestion")
     @Select({"<script>",
@@ -54,6 +78,26 @@ public interface UserMapper {
             "</script>"})
     QuestionVO selectOneQuestion(int question_id);
 
+*/
+
+    @ResultMap("resultQuestion")
+    @Select({"<script>",
+            "select category.name, A.category_id,",
+            "A.question_id, A.content, A.sort_order, ",
+            "if(isnull(A.image), concat(B.question_id, B.image) , concat(A.question_id, A.image) ) as image,",
+            "if(isnull(A.parent_question_id), A.distribution , B.distribution ) as distribution,",
+            "if(isnull(A.parent_question_id), A.correct_rate , B.correct_rate ) as correct_rate,",
+            "if(isnull(A.parent_question_id), A.answer , B.answer ) as answer ",
+            "from ",
+            "question as A inner join category ",
+            "on A.category_id = category.category_id ",
+            "left join question as B ",
+            "on A.parent_question_id = B.question_id ",
+            "where A.question_id = #{question_id}",
+            "</script>"})
+    QuestionVO selectOneQuestion(int question_id);
+
+/*
     @Select({"<script>",
             "SELECT A.*, (select count(*) from rate where rate.answer_id = A.answer_id) as review_count,",
             "(select round(avg(rate), 1) from rate where rate.answer_id = A.answer_id) as review_rate",
@@ -62,6 +106,19 @@ public interface UserMapper {
             "order by sort_order asc",
             "</script>"})
     List<AnswerVO> selectAnswer(int question_id);
+*/
+
+    @Select({"<script>",
+            "SELECT A.*, (select count(*) from rate where rate.answer_id = A.answer_id) as review_count,",
+            "(select round(avg(rate), 1) from rate where rate.answer_id = A.answer_id) as review_rate",
+            "FROM answer A join question ",
+            "on A.question_id = question.question_id ",
+            "or A.question_id = question.parent_question_id  ",
+            "where question.question_id = #{question_id}",
+            "order by review_rate desc",
+            "</script>"})
+    List<AnswerVO> selectAnswer(int question_id);
+
 
     @Select({"<script>",
             "SELECT *",
