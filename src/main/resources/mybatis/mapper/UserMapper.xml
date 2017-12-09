@@ -5,7 +5,7 @@
 
 	<resultMap id="resultQuestion" type="QuestionVO" >
 		<id property="question_id" column="question_id" />
-		<result property="number" column="number" />
+	<!--	<result property="number" column="number" />-->
 		<result property="content" column="content" />
 		<result property="sort_order" column="sort_order" />
 		<result property="distribution" column="distribution" />
