@@ -2,12 +2,16 @@ package com.minho.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created by eastflag on 2017-08-20.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
+@EqualsAndHashCode(callSuper=false)
+
+
 public class QuestionVO extends SearchVO{
     private Integer question_id;
     private Integer category_id;
