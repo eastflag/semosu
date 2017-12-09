@@ -9,8 +9,6 @@ import lombok.EqualsAndHashCode;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
-@EqualsAndHashCode(callSuper=false)
-
 
 public class QuestionVO extends SearchVO{
     private Integer question_id;
