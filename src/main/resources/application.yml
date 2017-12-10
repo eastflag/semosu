@@ -8,7 +8,7 @@ mybatis:
 
 datasource:
   driverClassName: "com.mysql.jdbc.Driver"
-  url: "jdbc:mysql://115.68.224.195:3306/semosudb?useUnicode=true&charaterEncoding=utf-8"
+  url: "jdbc:mysql://semosu.com:3306/semosudb?useUnicode=true&charaterEncoding=utf-8"
   userName: "semosu"
   password: "1234"
   initialSize: 10
