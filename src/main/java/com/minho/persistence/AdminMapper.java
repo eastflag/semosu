@@ -119,8 +119,8 @@ public interface AdminMapper {
 
     @Options(useGeneratedKeys = true, keyProperty = "question_id")
     @Insert({"<script>",
-            "INSERT INTO question(category_id, number, sort_order, content, answer, distribution, correct_rate, image, created)",
-            "VALUES(#{category_id}, #{number}, #{sort_order}, #{content}, #{answer}, #{distribution}, #{correct_rate}, #{image}, now())",
+            "INSERT INTO question(category_id, sort_order, content, answer, distribution, correct_rate, image, created)",
+            "VALUES(#{category_id},#{sort_order}, #{content}, #{answer}, #{distribution}, #{correct_rate}, #{image}, now())",
             "</script>"})
     int insertQuestion(QuestionVO question);
 
